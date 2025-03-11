@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -19,6 +20,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Table(name = "vehicles")
 public abstract class Vehicle {
     
     @Id
@@ -26,7 +28,7 @@ public abstract class Vehicle {
     @Column(name = "id")
     Long id;
 
-    @Column(name = "type", nullable = false)
+    @Column(insertable=false, updatable=false)
     String type;
 
     @Column(name = "brand")
