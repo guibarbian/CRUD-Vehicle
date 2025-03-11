@@ -1,11 +1,15 @@
 package com.example.demo.model.DTO.vehicle;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
-public class CreateVehicleResponse {
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+public abstract class CreateVehicleResponse {
     String type;
     String brand;
     String model;

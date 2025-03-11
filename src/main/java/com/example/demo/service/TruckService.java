@@ -8,7 +8,7 @@ import com.example.demo.model.DTO.truck.CreateTruckResponse;
 
 public interface TruckService {
     
-    Truck geTruck(Long truckId);
+    Truck getTruck(Long truckId);
 
     List<Truck> getTrucks();
 

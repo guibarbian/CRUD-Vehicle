@@ -8,7 +8,7 @@ import com.example.demo.model.DTO.bike.CreateBikeResponse;
 
 public interface BikeService {
     
-    Bike getBike();
+    Bike getBike(Long bikeId);
 
     List<Bike> getBikes();
 

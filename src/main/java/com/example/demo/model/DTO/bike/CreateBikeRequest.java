@@ -2,13 +2,13 @@ package com.example.demo.model.DTO.bike;
 
 import com.example.demo.model.DTO.vehicle.CreateVehicleRequest;
 
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Value;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
 public class CreateBikeRequest extends CreateVehicleRequest{
     
     boolean hasEletricStart;

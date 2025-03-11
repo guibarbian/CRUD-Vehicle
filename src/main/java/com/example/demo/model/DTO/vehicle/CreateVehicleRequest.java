@@ -1,13 +1,16 @@
 package com.example.demo.model.DTO.vehicle;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CreateVehicleRequest {
     
-    String type;
     String brand;
     String model;
     Integer manufacturingYear;
