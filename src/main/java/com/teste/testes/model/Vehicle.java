@@ -12,8 +12,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @Data
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type")
 @Entity
 @Table(name = "vehicles")
 public abstract class Vehicle {
@@ -22,7 +20,7 @@ public abstract class Vehicle {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
-    @Column(name = "type",insertable=false, updatable=false)
+    @Column(name = "type", updatable=false)
     String type;
 
     @Column(name = "brand")
@@ -33,5 +31,7 @@ public abstract class Vehicle {
 
     @Column(name = "manufacturingYear")
     Integer manufacturingYear;
+
+    public abstract ResponseVehicleDTO toDto();
     
 }

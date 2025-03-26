@@ -41,12 +41,31 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public ResponseVehicleDTO createVehicle(RequestVehicleDTO vehicleDTO){
-        return switch (vehicleDTO.getType().toLowerCase()) {
-            case "car" -> createCar(vehicleDTO);
-            case "motorcycle" -> createMotorcycle(vehicleDTO);
-            case "truck" -> createTruck(vehicleDTO);
+        Vehicle vehicle = switch(vehicleDTO.getType().toLowerCase()) {
+            case "car" -> new Car();
+            case "motorcycle" -> new Bike();
+            case "truck" -> new Truck();
             default -> throw new BadRequestException("Invalid vehicle type");
         };
+
+        vehicle.setType(vehicleDTO.getType());
+        vehicle.setBrand(vehicleDTO.getBrand());
+        vehicle.setModel(vehicleDTO.getModel());
+        vehicle.setManufacturingYear(vehicleDTO.getManufacturingYear());
+
+        if(vehicle instanceof Car && vehicleDTO.getDoors() != null){
+            ((Car) vehicle).setDoors(vehicleDTO.getDoors());
+        } else if(vehicle instanceof Bike){
+            ((Bike) vehicle).setHasElectricStart(vehicleDTO.isHasElectricStart());
+        } else if(vehicle instanceof Truck && vehicleDTO.getMaxCargo() != null){
+            ((Truck) vehicle).setMaxCargo(vehicleDTO.getMaxCargo());
+        } else{
+            throw new BadRequestException("Invalid vehicle type");
+        }
+
+        vehicleRepository.save(vehicle);
+
+        return vehicle.toDto();
     }
 
     @Override
@@ -61,12 +80,31 @@ public class VehicleServiceImpl implements VehicleService {
             throw new BadRequestException("Vehicle type cannot be changed");
         }
 
-        return switch (vehicle.get().getType().toLowerCase()) {
-            case "car" -> updateCar(vehicleId, vehicleDTO);
-            case "motorcycle" -> updateMotorcycle(vehicleId, vehicleDTO);
-            case "truck" -> updateTruck(vehicleId, vehicleDTO);
+        Vehicle updatedVehicle = switch(vehicle.get().getType().toLowerCase()) {
+            case "car" -> new Car();
+            case "motorcycle" -> new Bike();
+            case "truck" -> new Truck();
             default -> throw new BadRequestException("Invalid vehicle type");
         };
+
+        updatedVehicle.setId(vehicleId);
+        updatedVehicle.setType(vehicle.get().getType());
+        updatedVehicle.setBrand(vehicleDTO.getBrand());
+        updatedVehicle.setModel(vehicleDTO.getModel());
+        updatedVehicle.setManufacturingYear(vehicleDTO.getManufacturingYear());
+
+        if(updatedVehicle instanceof Car && vehicleDTO.getDoors() != null){
+            ((Car) updatedVehicle).setDoors(vehicleDTO.getDoors());
+        } else if(updatedVehicle instanceof Bike){
+            ((Bike) updatedVehicle).setHasElectricStart(vehicleDTO.isHasElectricStart());
+        } else if(updatedVehicle instanceof Truck && vehicleDTO.getMaxCargo() != null){
+            ((Truck) updatedVehicle).setMaxCargo(vehicleDTO.getMaxCargo());
+        } else{
+            throw new BadRequestException("Invalid vehicle type");
+        }
+
+        vehicleRepository.save(updatedVehicle);
+        return updatedVehicle.toDto();
     }
 
     @Override
@@ -79,135 +117,4 @@ public class VehicleServiceImpl implements VehicleService {
 
         vehicleRepository.delete(vehicle.get());
     }
-
-
-    private ResponseVehicleDTO createCar(RequestVehicleDTO vehicleDTO){
-        Car car = Car.builder()
-                .type(vehicleDTO.getType())
-                .brand(vehicleDTO.getBrand())
-                .model(vehicleDTO.getModel())
-                .manufacturingYear(vehicleDTO.getManufacturingYear())
-                .doors(vehicleDTO.getDoors())
-                .build();
-
-        vehicleRepository.save(car);
-
-        return ResponseVehicleDTO.builder()
-                .id(car.getId())
-                .type(car.getType())
-                .brand(car.getBrand())
-                .model(car.getModel())
-                .manufacturingYear(car.getManufacturingYear())
-                .doors(car.getDoors())
-                .build();
-    }
-
-    private ResponseVehicleDTO updateCar(Long carId, RequestVehicleDTO vehicleDTO){
-        Car car = Car.builder()
-                .id(carId)
-                .type(vehicleDTO.getType())
-                .brand(vehicleDTO.getBrand())
-                .model(vehicleDTO.getModel())
-                .manufacturingYear(vehicleDTO.getManufacturingYear())
-                .doors(vehicleDTO.getDoors())
-                .build();
-
-        vehicleRepository.save(car);
-
-        return ResponseVehicleDTO.builder()
-                .id(car.getId())
-                .type(car.getType())
-                .brand(car.getBrand())
-                .model(car.getModel())
-                .manufacturingYear(car.getManufacturingYear())
-                .doors(car.getDoors())
-                .build();
-    }
-
-    private ResponseVehicleDTO createMotorcycle(RequestVehicleDTO vehicleDTO){
-        Bike bike = Bike.builder()
-                .type(vehicleDTO.getType())
-                .brand(vehicleDTO.getBrand())
-                .model(vehicleDTO.getModel())
-                .manufacturingYear(vehicleDTO.getManufacturingYear())
-                .hasElectricStart(vehicleDTO.isHasElectricStart())
-                .build();
-
-        vehicleRepository.save(bike);
-
-        return ResponseVehicleDTO.builder()
-                .id(bike.getId())
-                .type(bike.getType())
-                .brand(bike.getBrand())
-                .model(bike.getModel())
-                .manufacturingYear(bike.getManufacturingYear())
-                .hasElectricStart(bike.isHasElectricStart())
-                .build();
-    }
-
-    private ResponseVehicleDTO updateMotorcycle(Long bikeId, RequestVehicleDTO vehicleDTO){
-        Bike bike = Bike.builder()
-                .id(bikeId)
-                .type(vehicleDTO.getType())
-                .brand(vehicleDTO.getBrand())
-                .model(vehicleDTO.getModel())
-                .manufacturingYear(vehicleDTO.getManufacturingYear())
-                .hasElectricStart(vehicleDTO.isHasElectricStart())
-                .build();
-
-        vehicleRepository.save(bike);
-
-        return ResponseVehicleDTO.builder()
-                .id(bike.getId())
-                .type(bike.getType())
-                .brand(bike.getBrand())
-                .model(bike.getModel())
-                .manufacturingYear(bike.getManufacturingYear())
-                .hasElectricStart(bike.isHasElectricStart())
-                .build();
-    }
-
-    private ResponseVehicleDTO createTruck(RequestVehicleDTO vehicleDTO){
-        Truck truck = Truck.builder()
-                .type(vehicleDTO.getType())
-                .brand(vehicleDTO.getBrand())
-                .model(vehicleDTO.getModel())
-                .manufacturingYear(vehicleDTO.getManufacturingYear())
-                .maxCargo(vehicleDTO.getMaxCargo())
-                .build();
-
-        vehicleRepository.save(truck);
-
-        return ResponseVehicleDTO.builder()
-                .id(truck.getId())
-                .type(truck.getType())
-                .brand(truck.getBrand())
-                .model(truck.getModel())
-                .manufacturingYear(truck.getManufacturingYear())
-                .maxCargo(truck.getMaxCargo())
-                .build();
-    }
-
-    private ResponseVehicleDTO updateTruck(Long truckId, RequestVehicleDTO vehicleDTO){
-        Truck truck = Truck.builder()
-                .id(truckId)
-                .type(vehicleDTO.getType())
-                .brand(vehicleDTO.getBrand())
-                .model(vehicleDTO.getModel())
-                .manufacturingYear(vehicleDTO.getManufacturingYear())
-                .maxCargo(vehicleDTO.getMaxCargo())
-                .build();
-
-        vehicleRepository.save(truck);
-
-        return ResponseVehicleDTO.builder()
-                .id(truck.getId())
-                .type(truck.getType())
-                .brand(truck.getBrand())
-                .model(truck.getModel())
-                .manufacturingYear(truck.getManufacturingYear())
-                .maxCargo(truck.getMaxCargo())
-                .build();
-    }
-
 }

@@ -70,7 +70,7 @@ public class VehicleServiceTest {
 
         ResponseVehicleDTO response = vehicleService.createVehicle(dto);
 
-        assertEquals("Ford", response.getBrand());
+        assertEquals("car", response.getType().toLowerCase());
         assertEquals(4, response.getDoors());
         assertNull(response.getMaxCargo());
         assertFalse(response.isHasElectricStart());
@@ -89,7 +89,7 @@ public class VehicleServiceTest {
 
         ResponseVehicleDTO response = vehicleService.createVehicle(dto);
 
-        assertEquals("Honda", response.getBrand());
+        assertEquals("motorcycle", response.getType().toLowerCase());
         assertTrue(response.isHasElectricStart());
         assertNull(response.getDoors());
         assertNull(response.getMaxCargo());
@@ -108,7 +108,7 @@ public class VehicleServiceTest {
 
         ResponseVehicleDTO response = vehicleService.createVehicle(dto);
 
-        assertEquals("Scania", response.getBrand());
+        assertEquals("truck", response.getType().toLowerCase());
         assertEquals(10000, response.getMaxCargo());
         assertNull(response.getDoors());
         assertFalse(response.isHasElectricStart());
