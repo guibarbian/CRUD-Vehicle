@@ -13,9 +13,11 @@ import com.teste.testes.service.VehicleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,19 +26,23 @@ public class VehicleServiceImpl implements VehicleService {
     private final VehicleRepository vehicleRepository;
 
     @Override
-    public List<Vehicle> findAll(){
-        return vehicleRepository.findAll();
+    public List<ResponseVehicleDTO> findAll(){
+        return vehicleRepository.findAll()
+                .stream()
+                .map(Vehicle::toDto)
+                .collect(Collectors.toList());
+
     }
 
     @Override
-    public Vehicle findById(Long vehicleId){
+    public ResponseVehicleDTO findById(Long vehicleId){
         Optional<Vehicle> vehicle = vehicleRepository.findById(vehicleId);
 
         if(vehicle.isEmpty()){
             throw new NotFoundException("Vehicle not found");
         }
 
-        return vehicle.get();
+        return vehicle.get().toDto();
     }
 
     @Override

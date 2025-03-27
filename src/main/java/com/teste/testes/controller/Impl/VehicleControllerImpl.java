@@ -21,13 +21,13 @@ public class VehicleControllerImpl implements VehicleController {
 
     @GetMapping
     @Override
-    public ResponseEntity<List<Vehicle>> getAllVehicles() {
+    public ResponseEntity<List<ResponseVehicleDTO>> getAllVehicles() {
         return ResponseEntity.ok(vehicleService.findAll());
     }
 
     @GetMapping("/{id}")
     @Override
-    public ResponseEntity<Vehicle> getVehicleById(@PathVariable Long id) {
+    public ResponseEntity<ResponseVehicleDTO> getVehicleById(@PathVariable Long id) {
         return ResponseEntity.ok(vehicleService.findById(id));
     }
 

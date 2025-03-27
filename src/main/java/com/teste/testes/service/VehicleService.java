@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface VehicleService {
 
-    public List<Vehicle> findAll();
+    List<ResponseVehicleDTO> findAll();
 
-    public Vehicle findById(Long vehicleId);
+    ResponseVehicleDTO findById(Long vehicleId);
 
-    public ResponseVehicleDTO createVehicle(RequestVehicleDTO dto);
+    ResponseVehicleDTO createVehicle(RequestVehicleDTO dto);
 
-    public ResponseVehicleDTO updateVehicle(Long vehicleId, RequestVehicleDTO dto);
+    ResponseVehicleDTO updateVehicle(Long vehicleId, RequestVehicleDTO dto);
 
-    public void deleteVehicle(Long vehicleId);
+    void deleteVehicle(Long vehicleId);
 }

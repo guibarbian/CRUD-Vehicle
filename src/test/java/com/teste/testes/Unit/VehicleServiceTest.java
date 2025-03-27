@@ -38,12 +38,12 @@ public class VehicleServiceTest {
 
         when(vehicleRepository.findAll()).thenReturn(List.of(car, bike, truck));
 
-        List<Vehicle> response = vehicleService.findAll();
+        List<ResponseVehicleDTO> response = vehicleService.findAll();
 
         assertEquals(3, response.size());
-        assertEquals(Car.class, response.get(0).getClass());
-        assertEquals(Bike.class, response.get(1).getClass());
-        assertEquals(Truck.class, response.get(2).getClass());
+        assertEquals(4, response.get(0).getDoors());
+        assertTrue(response.get(1).isHasElectricStart());
+        assertEquals(1000, response.get(2).getMaxCargo());
         verify(vehicleRepository, times(1)).findAll();
     }
 
@@ -53,9 +53,11 @@ public class VehicleServiceTest {
 
         when(vehicleRepository.findById(1L)).thenReturn(Optional.of(car));
 
-        Vehicle response = vehicleService.findById(1L);
+        ResponseVehicleDTO response = vehicleService.findById(1L);
 
-        assertEquals(Car.class, response.getClass());
+        assertEquals(car.getId(), response.getId());
+        assertEquals(car.getType(), response.getType());
+        assertEquals(car.getDoors(), response.getDoors());
     }
 
     @Test
@@ -131,7 +133,7 @@ public class VehicleServiceTest {
         } catch(Exception e){
             assertEquals("Invalid vehicle type", e.getMessage());
             verify(vehicleRepository, times(0)).save(any());
-        };
+        }
     }
 
     @Test
@@ -226,7 +228,7 @@ public class VehicleServiceTest {
         } catch(Exception e){
             assertEquals("Vehicle type cannot be changed", e.getMessage());
             verify(vehicleRepository, times(0)).save(any());
-        };
+        }
     }
 
     @Test
@@ -246,7 +248,7 @@ public class VehicleServiceTest {
             assertEquals("Vehicle not found", e.getMessage());
             verify(vehicleRepository, times(1)).findById(any());
             verify(vehicleRepository, times(0)).save(any());
-        };
+        }
     }
 
     @Test
@@ -270,6 +272,6 @@ public class VehicleServiceTest {
             assertEquals("Vehicle not found", e.getMessage());
             verify(vehicleRepository, times(1)).findById(any());
             verify(vehicleRepository, times(0)).delete(any());
-        };
+        }
     }
 }

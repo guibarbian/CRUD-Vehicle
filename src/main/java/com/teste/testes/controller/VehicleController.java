@@ -20,7 +20,7 @@ public interface VehicleController {
                     @ApiResponse(responseCode = "200", description = "Succeeded in returning a list of vehicles")
         }
     )
-    public ResponseEntity<List<Vehicle>> getAllVehicles();
+    ResponseEntity<List<ResponseVehicleDTO>> getAllVehicles();
 
     @Operation(
             summary = "Get vehicle by Id",
@@ -33,7 +33,7 @@ public interface VehicleController {
                     @ApiResponse(responseCode = "404", description = "Id didn't belong to any vehicle")
             }
     )
-    public ResponseEntity<Vehicle> getVehicleById(Long id);
+    ResponseEntity<ResponseVehicleDTO> getVehicleById(Long id);
 
     @Operation(
             summary = "Create a vehicle",
@@ -46,7 +46,7 @@ public interface VehicleController {
                     @ApiResponse(responseCode = "400", description = "Invalid request body")
             }
     )
-    public ResponseEntity<ResponseVehicleDTO> createVehicle(RequestVehicleDTO request);
+    ResponseEntity<ResponseVehicleDTO> createVehicle(RequestVehicleDTO request);
 
     @Operation(
             summary = "Updates a vehicle",
@@ -61,7 +61,7 @@ public interface VehicleController {
                     @ApiResponse(responseCode = "404", description = "Id didn't belong to any vehicle")
             }
     )
-    public ResponseEntity<ResponseVehicleDTO> updateVehicle(Long id, RequestVehicleDTO request);
+    ResponseEntity<ResponseVehicleDTO> updateVehicle(Long id, RequestVehicleDTO request);
 
     @Operation(
             summary = "Deletes a vehicle",
@@ -74,5 +74,5 @@ public interface VehicleController {
                     @ApiResponse(responseCode = "404", description = "Id didn't belong to any vehicle")
             }
     )
-    public ResponseEntity<String> deleteVehicle(Long id);
+    ResponseEntity<String> deleteVehicle(Long id);
 }
