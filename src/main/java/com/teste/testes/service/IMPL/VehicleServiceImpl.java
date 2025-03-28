@@ -69,9 +69,9 @@ public class VehicleServiceImpl implements VehicleService {
             throw new BadRequestException("Invalid vehicle type");
         }
 
-        vehicleRepository.save(vehicle);
+        Vehicle savedVehicle = vehicleRepository.save(vehicle);
 
-        return vehicle.toDto();
+        return savedVehicle.toDto();
     }
 
     @Override
@@ -109,8 +109,9 @@ public class VehicleServiceImpl implements VehicleService {
             throw new BadRequestException("Invalid vehicle type");
         }
 
-        vehicleRepository.save(updatedVehicle);
-        return updatedVehicle.toDto();
+        Vehicle savedVehicle = vehicleRepository.save(updatedVehicle);
+
+        return savedVehicle.toDto();
     }
 
     @Override

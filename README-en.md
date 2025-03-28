@@ -45,7 +45,7 @@ The application will be executed in http://localhost:8080
 
 You can use some API client like Postman or Insomnia to test the endpoints manually
 
-# Endpoints
+## Endpoints
 
 This API has the following Endpoints
 

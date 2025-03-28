@@ -45,7 +45,7 @@ A aplicação vai ser executada em http://localhost:8080
 
 Você pode usar algum cliente de API como Postman ou Insomnia para testar os endpoints manualmente
 
-# Endpoints
+## Endpoints
 
 Esta API tem os seguintes Endpoints
 

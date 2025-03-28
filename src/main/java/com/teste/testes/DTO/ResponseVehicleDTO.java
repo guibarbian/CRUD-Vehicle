@@ -1,5 +1,6 @@
 package com.teste.testes.DTO;
 
+import com.teste.testes.model.Vehicle;
 import lombok.Builder;
 import lombok.Data;
 

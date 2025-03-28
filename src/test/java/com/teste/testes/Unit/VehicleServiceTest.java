@@ -70,6 +70,15 @@ public class VehicleServiceTest {
                 .doors(4)
                 .build();
 
+        Car savedCar = Car.builder()
+                .type(dto.getType())
+                .brand(dto.getModel())
+                .model(dto.getModel())
+                .manufacturingYear(dto.getManufacturingYear())
+                .doors(dto.getDoors()).build();
+
+        when(vehicleRepository.save(any(Car.class))).thenReturn(savedCar);
+
         ResponseVehicleDTO response = vehicleService.createVehicle(dto);
 
         assertEquals("car", response.getType().toLowerCase());
@@ -86,8 +95,16 @@ public class VehicleServiceTest {
                 .brand("Honda")
                 .model("CBR")
                 .manufacturingYear(2020)
-                .hasElectricStart(true)
-                .build();
+                .hasElectricStart(true).build();
+
+        Bike savedBike = Bike.builder()
+                .type(dto.getType())
+                .brand(dto.getBrand())
+                .model(dto.getModel())
+                .manufacturingYear(dto.getManufacturingYear())
+                .hasElectricStart(dto.isHasElectricStart()).build();
+
+        when(vehicleRepository.save(any(Vehicle.class))).thenReturn(savedBike);
 
         ResponseVehicleDTO response = vehicleService.createVehicle(dto);
 
@@ -107,6 +124,16 @@ public class VehicleServiceTest {
                 .manufacturingYear(2020)
                 .maxCargo(10000)
                 .build();
+
+        Truck savedTruck = Truck.builder()
+                .type(dto.getType())
+                .brand(dto.getBrand())
+                .model(dto.getModel())
+                .manufacturingYear(dto.getManufacturingYear())
+                .maxCargo(dto.getMaxCargo())
+                .build();
+
+        when(vehicleRepository.save(any(Truck.class))).thenReturn(savedTruck);
 
         ResponseVehicleDTO response = vehicleService.createVehicle(dto);
 
@@ -145,12 +172,19 @@ public class VehicleServiceTest {
                 .brand("Ford")
                 .model("Ka")
                 .manufacturingYear(2020)
-                .doors(4)
-                .build();
+                .doors(4).build();
 
-        when(vehicleRepository.findById(1L)).thenReturn(Optional.of(car));
+        Car savedCar = Car.builder()
+                        .type(dto.getType())
+                        .brand(dto.getBrand())
+                        .model(dto.getModel())
+                        .manufacturingYear(dto.getManufacturingYear())
+                        .doors(dto.getDoors()).build();
 
-        ResponseVehicleDTO response = vehicleService.updateVehicle(1L, dto);
+        when(vehicleRepository.findById(car.getId())).thenReturn(Optional.of(car));
+        when(vehicleRepository.save(any(Car.class))).thenReturn(savedCar);
+
+        ResponseVehicleDTO response = vehicleService.updateVehicle(car.getId(), dto);
 
         assertEquals("Ford", response.getBrand());
         assertEquals(4, response.getDoors());
@@ -169,9 +203,16 @@ public class VehicleServiceTest {
                 .brand("Honda")
                 .model("CBR")
                 .manufacturingYear(2020)
-                .hasElectricStart(true)
-                .build();
+                .hasElectricStart(true).build();
 
+        Bike savedBike = Bike.builder()
+                .type(dto.getType())
+                .brand(dto.getBrand())
+                .model(dto.getModel())
+                .manufacturingYear(dto.getManufacturingYear())
+                .hasElectricStart(dto.isHasElectricStart()).build();
+
+        when(vehicleRepository.save(any(Bike.class))).thenReturn(savedBike);
         when(vehicleRepository.findById(1L)).thenReturn(Optional.of(bike));
 
         ResponseVehicleDTO response = vehicleService.updateVehicle(1L, dto);
@@ -186,19 +227,31 @@ public class VehicleServiceTest {
 
     @Test
     void shallUpdateTruck(){
-        Truck truck = Truck.builder().type("Truck").maxCargo(1000).build();
+        Truck truck = Truck.builder()
+                .type("Truck")
+                .brand("Scania")
+                .model("R440")
+                .manufacturingYear(2020)
+                .maxCargo(1000).build();
 
         RequestVehicleDTO dto = RequestVehicleDTO.builder()
                 .type("Truck")
                 .brand("Scania")
                 .model("R440")
                 .manufacturingYear(2020)
-                .maxCargo(10000)
-                .build();
+                .maxCargo(10000).build();
 
-        when(vehicleRepository.findById(1L)).thenReturn(Optional.of(truck));
+        Truck updatedTruck = Truck.builder()
+                .type(dto.getType())
+                .brand(dto.getBrand())
+                .model(dto.getModel())
+                .manufacturingYear(dto.getManufacturingYear())
+                .maxCargo(dto.getMaxCargo()).build();
 
-        ResponseVehicleDTO response = vehicleService.updateVehicle(1L, dto);
+        when(vehicleRepository.findById(truck.getId())).thenReturn(Optional.of(truck));
+        when(vehicleRepository.save(any(Vehicle.class))).thenReturn(updatedTruck);
+
+        ResponseVehicleDTO response = vehicleService.updateVehicle(truck.getId(), dto);
 
         assertEquals("Scania", response.getBrand());
         assertEquals(10000, response.getMaxCargo());
