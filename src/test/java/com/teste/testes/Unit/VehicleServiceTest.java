@@ -10,6 +10,8 @@ import com.teste.testes.repository.VehicleRepository;
 import com.teste.testes.service.IMPL.VehicleServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -23,6 +25,9 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class VehicleServiceTest {
+
+    @Captor
+    private ArgumentCaptor<Car> carCaptor;
 
     @Mock
     private VehicleRepository vehicleRepository;
@@ -67,25 +72,25 @@ public class VehicleServiceTest {
                 .brand("Ford")
                 .model("Ka")
                 .manufacturingYear(2020)
-                .doors(4)
-                .build();
+                .doors(0).build();
 
-        Car savedCar = Car.builder()
+        Car car = Car.builder()
                 .type(dto.getType())
-                .brand(dto.getModel())
+                .brand(dto.getBrand())
                 .model(dto.getModel())
                 .manufacturingYear(dto.getManufacturingYear())
                 .doors(dto.getDoors()).build();
 
-        when(vehicleRepository.save(any(Car.class))).thenReturn(savedCar);
+        when(vehicleRepository.save(car)).thenReturn(carCaptor.capture());
 
         ResponseVehicleDTO response = vehicleService.createVehicle(dto);
 
+        assertNotNull(car.getType());
         assertEquals("car", response.getType().toLowerCase());
         assertEquals(4, response.getDoors());
         assertNull(response.getMaxCargo());
         assertFalse(response.isHasElectricStart());
-        verify(vehicleRepository, times(1)).save(any(Car.class));
+        verify(vehicleRepository, times(1)).save(car);
     }
 
     @Test
@@ -213,9 +218,9 @@ public class VehicleServiceTest {
                 .hasElectricStart(dto.isHasElectricStart()).build();
 
         when(vehicleRepository.save(any(Bike.class))).thenReturn(savedBike);
-        when(vehicleRepository.findById(1L)).thenReturn(Optional.of(bike));
+        when(vehicleRepository.findById(bike.getId())).thenReturn(Optional.of(bike));
 
-        ResponseVehicleDTO response = vehicleService.updateVehicle(1L, dto);
+        ResponseVehicleDTO response = vehicleService.updateVehicle(bike.getId(), dto);
 
         assertEquals("Honda", response.getBrand());
         assertTrue(response.isHasElectricStart());

@@ -45,7 +45,7 @@ A aplicação vai ser executada em http://localhost:8080
 
 Você pode usar algum cliente de API como Postman ou Insomnia para testar os endpoints manualmente
 
-## Endpoints
+# Endpoints
 
 Esta API tem os seguintes Endpoints
 
@@ -56,6 +56,33 @@ Esta API tem os seguintes Endpoints
 | POST   | `/vehicles`      | Cria um novo veículo    |
 | PUT    | `/vehicles/{id}` | Atualiza um veículo     |
 | DELETE | `/vehicles/{id}` | Deleta um veículo       |
+
+## 
+
+Para criar ou atualizar um veículo, você deve enviar um corpo JSON com os seguintes atributos:
+```json
+{
+  "type":"tipoDoVeículo",
+  "brand": "marcaDoVeículo",
+  "model": "modeloDoVeículo",
+  "manufacturingYear": "anoEmNúmeros"
+}
+```
+
+⚠️ Os únicos "type"s aceitos são ⚠️
+```
+"car", "motorcycle" e "truck"
+```
+
+⚠️ E eles devem ter um atributo especial ⚠️
+
+````json
+{
+  "door": "númeroDePortasApenasParaCarro",
+  "hasElectricStart": "booleanApenasParaMoto",
+  "maxCargo": "cargaMáximaSuportadaApenasParaCaminhão"
+}
+````
 
 
 # Desenvolvido com ⚙
